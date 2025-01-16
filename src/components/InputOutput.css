@@ -1,0 +1,57 @@
+.io-block {
+  display: grid;
+  gap: 8px 16px;
+}
+
+.io-block:has(> label) {
+  grid-template-columns: 1fr 1fr;
+}
+
+.io-block > label {
+  width: max-content;
+  align-self: center;
+  display: flex;
+  gap: 1ch;
+}
+
+.io-block :is(input, select) {
+  font-family: inherit;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  flex: auto;
+}
+
+.io-wrapper,
+:not(label .io-block) > select {
+  padding: 4px 8px;
+  border-radius: 3px;
+  border: 1px solid #767676;
+  display: flex;
+  gap: 1ch;
+}
+
+.io-wrapper:hover,
+:not(label .io-block) > select:hover {
+  border-color: #4f4f4f;
+}
+
+.io-block .Amount::before {
+  content: "₹";
+}
+
+.io-block .Percentage::after {
+  content: "%";
+}
+
+.io-block .Time::after {
+  content: "Yr";
+}
+
+.io-words {
+  font-size: smaller;
+  color: #8a8a8a;
+  padding: 0 8px;
+  margin-top: -6px;
+  grid-column-start: 2;
+}
