@@ -33,7 +33,8 @@ function App() {
   const [expectedGrowth, setExpectedGrowth] = useState(12)
   const [growthFrequency, setGrowthFrequency] = useState(transactionFrequency)
 
-  const [taxOnWithdrawal, setTaxOnWithdrawal] = useState(12.5)
+  const [shortTermTax, setShortTermTax] = useState(20)
+  const [longTermTax, setLongTermTax] = useState(12.5)
 
   const [outputFrequency, setOutputFrequency] = useState(1)
   const [resultType, setResultType] = useState('Cumulative' as Result)
@@ -46,12 +47,13 @@ function App() {
   let stepUpAmount = 0;
   let unitRate = 1;
   let units = initialInvestment / unitRate;
+  let taxOnWithdrawal = shortTermTax;
 
   for (let i = 0; i < holdingDuration * 12; i++) {
     transactedAmount.push(0)
     withdrawalTax.push(0)
     estimatedGain.push(0)
-    maturityAmount.push(0)
+    maturityAmount.push(maturityAmount[i])
 
     if (i !== 0 && i % (12 / stepUpFrequency) === 0) {
       if (stepUpType === 'Amount') {
@@ -79,6 +81,10 @@ function App() {
 
         withdrawalTax[i + 1] = transactedUnits * (unitRate - 1) * taxOnWithdrawal / 100
         units -= transactedUnits
+      }
+
+      if (i + 1 === 12) {
+        taxOnWithdrawal = longTermTax
       }
 
       if (units === 0 && (i + 1) % 12 === 0) {
@@ -277,16 +283,24 @@ function App() {
               }
             }}
           ></InputSelect>
-          {
-            <InputNumber
-              id="tax-on-gain"
-              label="Tax on Gain"
-              value={taxOnWithdrawal}
-              min={0}
-              format="Percentage"
-              onChange={(e) => setTaxOnWithdrawal(floor(+e.target.value, 2))}
-            ></InputNumber>
-          }
+
+          <InputNumber
+            id="stcg-tax"
+            label="STCG (Short Term) Tax"
+            value={shortTermTax}
+            min={0}
+            format="Percentage"
+            onChange={(e) => setShortTermTax(floor(+e.target.value, 2))}
+          ></InputNumber>
+
+          <InputNumber
+            id="ltcg-tax"
+            label="LTCG (Long Term) Tax"
+            value={longTermTax}
+            min={0}
+            format="Percentage"
+            onChange={(e) => setLongTermTax(floor(+e.target.value, 2))}
+          ></InputNumber>
         </div>
 
         <div id="output" className="container">

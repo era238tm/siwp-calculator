@@ -7,7 +7,11 @@ function InputNumber(props: InputNumberProps) {
       <div className="io-block">
         {props.label && <label htmlFor={props.id}>{props.label}</label>}
         <span className={`io-wrapper ${props.format || ''}`}>
-          <input type="number" {...(props as React.InputHTMLAttributes<HTMLInputElement>)} />
+          <input
+            type="number"
+            {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
+            value={Number(props.value).toString()}
+          />
         </span>
 
         {
